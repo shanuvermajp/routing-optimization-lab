@@ -2,11 +2,19 @@
 
 A structured learning progression through vehicle routing optimization — from TSP basics to CVRPTW with exact solvers.
 
-Built and maintained by **Inovex Solutions**.
+Built and maintained by **[Inovex Solutions](https://github.com/shanuvermajp)**.
 
 ---
 
-## Structure
+## Live Demo
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://routing-optimization-lab-fbuuoop2zlchxpxqhejywb.streamlit.app/)
+
+> Try the live TSP solver — adjust cities, seed, and start city, then click Solve to see the route comparison.
+
+---
+
+## What this project covers
 
 | Folder | Topic | Concepts |
 |---|---|---|
@@ -18,10 +26,51 @@ Built and maintained by **Inovex Solutions**.
 
 ---
 
+## API
+
+The solver is also exposed as a REST API using FastAPI.
+
+**Run locally:**
+```bash
+uvicorn api.main:app --reload
+```
+
+**Endpoints:**
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Health check |
+| GET | `/instance` | Generate a random TSP instance |
+| POST | `/solve/tsp` | Solve TSP, returns tour + distance |
+
+**Example request:**
+```json
+POST /solve/tsp
+{
+  "n_cities": 15,
+  "seed": 42,
+  "start_city": 0,
+  "use_two_opt": true
+}
+```
+
+**Example response:**
+```json
+{
+  "n_cities": 15,
+  "nn_distance": 339.38,
+  "opt_distance": 313.00,
+  "improvement_pct": 7.8,
+  "opt_tour": [0, 10, 12, 8, 13, 7, 4, 14, 2, 5, 6, 3, 11, 1, 9, 0]
+}
+```
+
+---
+
 ## Setup
 
 ```bash
-git clone https://github.com/inovex-solutions/routing-optimization-lab
+git clone https://github.com/shanuvermajp/routing-optimization-lab
 cd routing-optimization-lab
 pip install -r requirements.txt
 ```
@@ -29,13 +78,13 @@ pip install -r requirements.txt
 ## Run
 
 ```bash
-# Step 1 — TSP basics (terminal output)
+# TSP solver (terminal output)
 python 01_tsp/tsp_basics.py
 
-# Step 1 — Visualize (saves PNG)
+# Route visualizer (saves PNG)
 python 01_tsp/tsp_visualize.py
 
-# Streamlit UI (opens in browser at http://localhost:8501)
+# Streamlit UI (opens at http://localhost:8501)
 streamlit run app/streamlit_app.py
 
 # FastAPI (opens at http://127.0.0.1:8000/docs)
@@ -51,3 +100,10 @@ uvicorn api.main:app --reload
 - [ ] 03 — CVRPTW: time windows
 - [ ] 04 — OR-Tools exact solver
 - [ ] 05 — Solomon benchmark
+
+---
+
+## About
+
+This repository is part of Inovex Solutions' open-source optimization toolkit.  
+Contact: shanuverma.jp@gmail.com
